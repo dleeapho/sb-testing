@@ -56,9 +56,9 @@ RUN localedef -c -i en_US -f UTF-8 en_US.UTF-8
 RUN mkdir dnsb
 WORKDIR dnsb
 
-RUN curl -O https://matell.blob.core.windows.net/cli-src/cli-1.0.0-preview2-003200.tar.gz
-RUN tar xvf cli-1.0.0-preview2-003200.tar.gz
-WORKDIR cli-1.0.0-preview2-003200
+RUN curl -O https://matell.blob.core.windows.net/cli-src/cli-1.0.0-preview2-1-003211.tar.gz
+RUN tar xvf cli-1.0.0-preview2-1-003211.tar.gz
+WORKDIR cli-1.0.0-preview2-1-003211
 RUN ./unpack-sources.sh
 RUN yum install patch -y
 
