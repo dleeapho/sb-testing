@@ -1,0 +1,6 @@
+#FROM microsoft/dotnet-buildtools-prereqs:fedora-24-67592e6-20170219020243
+FROM microsoft/dotnet-buildtools-prereqs:rhel-7-rpmpkg-e1b4a89-20175311035359
+RUN mkdir git
+WORKDIR git
+RUN git clone https://github.com/dotnet/source-build.git
+WORKDIR source-build
