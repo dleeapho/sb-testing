@@ -1,8 +1,6 @@
-#FROM microsoft/dotnet-buildtools-prereqs:fedora-24-67592e6-20170219020243
-#FROM microsoft/dotnet-buildtools-prereqs:rhel-7-rpmpkg-e1b4a89-20175311035359
+# Assumes a RHEL 7 host that is subscribed: subscription-manager register --username <username> --password <pw> --auto-attach
 FROM registry.access.redhat.com/rhel7
-ARG PW
-RUN subscription-manager register --username dleeapho-msft --password $PW --auto-attach
+
 
 # Install the base toolchain we need to build anything (clang, cmake, make and the like)
 # this does not include libraries that we need to compile different projects, we'd like
@@ -31,6 +29,7 @@ RUN yum install -y https://rpm.nodesource.com/pub_0.10/el/7/x86_64/nodesource-re
         zip \
         tar \
         nodejs \
+        patch \
     yum clean all && \
     npm install -g azure-cli
 
@@ -57,10 +56,9 @@ RUN mkdir dnsb
 WORKDIR dnsb
 
 RUN curl -O https://matell.blob.core.windows.net/cli-src/cli-1.0.0-preview2-1-003211.tar.gz
-RUN tar xvf cli-1.0.0-preview2-1-003211.tar.gz
+RUN tar -xvf cli-1.0.0-preview2-1-003211.tar.gz
 WORKDIR cli-1.0.0-preview2-1-003211
-RUN ./unpack-sources.sh
-RUN yum install patch -y
 
+RUN ./unpack-sources.sh
 #RUN ./apply-patches.sh
 #RUN ./build.sh
