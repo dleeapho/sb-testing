@@ -53,18 +53,3 @@ RUN wget -P /etc/yum.repos.d/ https://packages.efficios.com/repo.files/EfficiOS-
 # the output of a run)
 RUN localedef -c -i en_US -f UTF-8 en_US.UTF-8
 # --- From Matt Ellis' dotnet-buildtools-prereqs rhel7 Docker file ---
-
-RUN mkdir dnsb
-WORKDIR dnsb
-
-#ARG url
-#RUN curl -o dotnet-2.0.5.tar.gz $url 
-#RUN tar -xvf dotnet-2.0.5.tar.gz
-#WORKDIR dotnet
-
-RUN git clone https://github.com/crummel/source-build-tarball-2.0.5.git
-WORKDIR source-build-tarball-2.0.5
-
-RUN ./build.sh /p:SkipPatches=true
-#RUN ./apply-patches.sh
-#RUN ./build.sh
