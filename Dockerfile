@@ -11,6 +11,7 @@ RUN git clone https://github.com/crummel/source-build-tarball-2.0.5.git
 
 WORKDIR source-build-tarball-2.0.5
 #COPY source-build-tarball-2.0.5/* ./
-RUN ./build.sh /p:SkipPatches=true
+#RUN for dir in `ls patches`; do git apply --directory=src/$dir --ignore-whitespace patches/$dir/*; done
+#RUN ./build.sh /p:SkipPatches=true|| true
 #RUN ./apply-patches.sh
-#RUN ./build.sh
+RUN ./build.sh || true
