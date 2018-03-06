@@ -1,0 +1,9 @@
+FROM rhel74prereq
+RUN mkdir -p /usr/share/dotnet
+WORKDIR /usr/share/dotnet
+COPY dotnet-sdk-2.1.101-rhel.7.4-x64.tar.gz .
+RUN tar -xvf dotnet-sdk-2.1.101-rhel.7.4-x64.tar.gz
+RUN ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+RUN mkdir -p /myapp
+WORKDIR  /myapp
+
