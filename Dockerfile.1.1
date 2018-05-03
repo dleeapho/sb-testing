@@ -5,7 +5,7 @@ WORKDIR dnsb
 ARG url
 RUN curl -o dotnet-1.0.tar.gz $url 
 RUN tar -xvf dotnet-1.0.tar.gz
-WORKDIR dotnet
+WORKDIR /dnsb/cli-1.0.0-preview2-1-003291
 
 RUN ./unpack-sources.sh
 RUN ./apply-patches.sh

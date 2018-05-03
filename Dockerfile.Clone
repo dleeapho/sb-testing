@@ -1,7 +1,7 @@
 FROM rhel74prereq 
-ARG pw
-RUN git clone https://dleeapho:$pw@devdiv.visualstudio.com/DefaultCollection/DevDiv/_git/DotNet-Source-Build-Tarball
+ARG url
+RUN git clone $url source-build
 
-WORKDIR DotNet-Source-Build-Tarball
+WORKDIR source-build
 
 RUN ./build.sh || true
