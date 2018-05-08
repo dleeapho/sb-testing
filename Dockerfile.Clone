@@ -1,7 +1,11 @@
-FROM rhel74prereq 
-ARG url
-RUN git clone $url source-build
+#FROM rhel74prereq 
+#FROM docker.io/microsoft/dotnet-buildtools-prereqs:rhel7_prereqs_2
+FROM rhel74prereq3
+#ARG url
+#RUN git clone $url source-build
+RUN git clone https://github.com/dotnet/source-build.git source-build
 
 WORKDIR source-build
 
-RUN ./build.sh || true
+RUN ./build.sh /p:ArchiveDownloadedPackages=true || true
+RUN ./build-source-tarball.sh ../tarball-output --skip-build || true
