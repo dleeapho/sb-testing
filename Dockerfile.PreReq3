@@ -25,6 +25,7 @@ RUN yum updateinfo && \
         which \
         make && \
     yum clean all
+RUN export PATH=$PATH:/opt/rh/llvm-toolset-7/root/usr/bin
 
 # Install tools used by the VSO build automation.  We use NodeJS from nodesource.com.
 RUN yum install -y https://rpm.nodesource.com/pub_0.10/el/7/x86_64/nodesource-release-el7-1.noarch.rpm && \

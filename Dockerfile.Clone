@@ -1,9 +1,7 @@
-#FROM rhel74prereq 
-#FROM docker.io/microsoft/dotnet-buildtools-prereqs:rhel7_prereqs_2
-FROM rhel74prereq3
+FROM rhel74prereq 
 #ARG url
 #RUN git clone $url source-build
-RUN git clone https://github.com/dotnet/source-build.git source-build
+RUN git clone -b release/2.1 --single-branch https://github.com/dotnet/source-build.git source-build
 
 WORKDIR source-build
 
