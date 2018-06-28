@@ -1,12 +1,10 @@
 FROM rhel74prereq 
 
-RUN mkdir dnsb
+RUN mkdir -p dnsb
 WORKDIR dnsb
+
 ARG url
 RUN curl -o dotnet-1.0.tar.gz $url 
 RUN tar -xvf dotnet-1.0.tar.gz
-WORKDIR /dnsb/cli-1.0.0-preview2-1-003291
 
-RUN ./unpack-sources.sh
-RUN ./apply-patches.sh
-RUN ./build.sh || true
+RUN cd * && ./unpack-sources.sh && ./apply-patches.sh &&  ./build.sh || true
