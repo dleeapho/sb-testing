@@ -4,6 +4,14 @@ RUN mkdir -p dnsb
 WORKDIR dnsb
 
 ARG url
-RUN curl -o dotnet-1.tar.gz $url 
-RUN tar -xvf dotnet-1.tar.gz --no-same-owner
-RUN cd * && ./unpack-sources.sh && chown -R root:root * && ./apply-patches.sh &&  ./build.sh || true
+RUN curl -o dotnet.tar.gz $url 
+RUN tar -xvf dotnet.tar.gz --no-same-owner
+RUN rm dotnet.tar.gz
+
+# 1.0, 1.1 build commands
+#RUN cd * && ./unpack-sources.sh && chown -R root:root * && ./apply-patches.sh &&  ./build.sh || true
+RUN cd * && ./unpack-sources.sh && ./apply-patches.sh &&  ./build.sh || true
+
+# 2.1 build commands
+#RUN cd * && ./build.sh /p:ArchiveDownloadedPackages=true || true
+#RUN cd * && ./build-source-tarball.sh ../tarball-output --skip-build || true

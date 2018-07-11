@@ -11,23 +11,18 @@ RUN yum-config-manager --disable rhel-7-server-rt-beta-rpms
 # --- From Matt Ellis' dotnet-buildtools-prereqs rhel7 Docker file ---
 # Our toolchain is CMake 3.3.2 from GhettoForge; LLVM 3.6.2 built from source ourselves; wget,
 # which, and make (from RHEL).
-RUN yum updateinfo && \
-	yum-config-manager --enable rhel-7-server-devtools-rpms && \
-	yum install -y rh-dotnet20-jsoncpp --enablerepo=rhel-7-server-dotnet-rpms \
-	cmake \
-	llvm-toolset-7-clang.x86_64 \
-	llvm-toolset-7-clang-libs.x86_64 \
-	llvm-toolset-7-lldb.x86_64 \
-	llvm-toolset-7-lldb-devel.x86_64 \
-	llvm-toolset-7-llvm.x86_64 \
-	llvm-toolset-7-llvm-libs.x86_64 \
+RUN yum install -y https://matell.blob.core.windows.net/rpms/jsoncpp-0.10.5-1.el7.x86_64.rpm \
+        https://matell.blob.core.windows.net/rpms/cmake-3.3.2-1.gf.el7.x86_64.rpm \
+        https://matell.blob.core.windows.net/rpms/clang-3.6.2-3.el7.x86_64.rpm \
+        https://matell.blob.core.windows.net/rpms/clang-libs-3.6.2-3.el7.x86_64.rpm \
+        https://matell.blob.core.windows.net/rpms/lldb-3.6.2-3.el7.x86_64.rpm \
+        https://matell.blob.core.windows.net/rpms/lldb-devel-3.6.2-3.el7.x86_64.rpm \
+        https://matell.blob.core.windows.net/rpms/llvm-3.6.2-3.el7.x86_64.rpm \
+        https://matell.blob.core.windows.net/rpms/llvm-libs-3.6.2-3.el7.x86_64.rpm \
         wget \
         which \
         make && \
     yum clean all
-#RUN export PATH=$PATH:/opt/rh/llvm-toolset-7/root/usr/bin
-ENV PATH "/opt/rh/llvm-toolset-7/root/usr/bin:${PATH}"
-ENV CMAKE_INCLUDE_PATH "/opt/rh/llvm-toolset-7/root/usr/include"
 
 # Install tools used by the VSO build automation.  We use NodeJS from nodesource.com.
 RUN yum install -y https://rpm.nodesource.com/pub_0.10/el/7/x86_64/nodesource-release-el7-1.noarch.rpm && \

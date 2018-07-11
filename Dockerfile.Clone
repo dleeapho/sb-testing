@@ -1,4 +1,4 @@
-FROM rhel74prereq 
+FROM rhel7prereq3
 #ARG url
 #RUN git clone $url source-build
 RUN git clone -b release/2.1 --single-branch https://github.com/dotnet/source-build.git source-build
