@@ -8,9 +8,7 @@ RUN yum-config-manager --disable rhel-7-server-rt-beta-rpms
 # this does not include libraries that we need to compile different projects, we'd like
 # them in a different layer.
 
-# --- From Matt Ellis' dotnet-buildtools-prereqs rhel7 Docker file ---
-# Our toolchain is CMake 3.3.2 from GhettoForge; LLVM 3.6.2 built from source ourselves; wget,
-# which, and make (from RHEL).
+# --- Toolchain from RHEL-7 software collection ---
 RUN yum updateinfo && \
 	yum-config-manager --enable rhel-7-server-devtools-rpms && \
 	yum install -y rh-dotnet20-jsoncpp --enablerepo=rhel-7-server-dotnet-rpms \
@@ -25,7 +23,7 @@ RUN yum updateinfo && \
         which \
         make && \
     yum clean all
-#RUN export PATH=$PATH:/opt/rh/llvm-toolset-7/root/usr/bin
+# Needed by coreclr build to discover llvm-toolset-7 clang, and includes
 ENV PATH "/opt/rh/llvm-toolset-7/root/usr/bin:${PATH}"
 ENV CMAKE_INCLUDE_PATH "/opt/rh/llvm-toolset-7/root/usr/include"
 
@@ -57,4 +55,4 @@ RUN wget -P /etc/yum.repos.d/ https://packages.efficios.com/repo.files/EfficiOS-
 # being unable to use the en_US.UTF-8 locale which can cause downstream failures if you capture
 # the output of a run)
 RUN localedef -c -i en_US -f UTF-8 en_US.UTF-8
-# --- From Matt Ellis' dotnet-buildtools-prereqs rhel7 Docker file ---
+
