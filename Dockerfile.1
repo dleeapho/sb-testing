@@ -1,7 +1,7 @@
-#FROM rhel7prereq 
-FROM docker.io/microsoft/dotnet-buildtools-prereqs:rhel7_prereqs_2
-RUN yum updateinfo && \
-	yum install -y patch
+FROM rhel7cookedprereq 
+#FROM docker.io/microsoft/dotnet-buildtools-prereqs:rhel7_prereqs_2
+#RUN yum updateinfo && \
+#	yum install -y patch
 
 RUN mkdir -p dnsb
 WORKDIR dnsb
