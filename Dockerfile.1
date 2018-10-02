@@ -1,4 +1,7 @@
-FROM rhel74prereq 
+#FROM rhel7prereq 
+FROM docker.io/microsoft/dotnet-buildtools-prereqs:rhel7_prereqs_2
+RUN yum updateinfo && \
+	yum install -y patch
 
 RUN mkdir -p dnsb
 WORKDIR dnsb
@@ -9,9 +12,5 @@ RUN tar -xvf dotnet.tar.gz --no-same-owner
 RUN rm dotnet.tar.gz
 
 # 1.0, 1.1 build commands
-#RUN cd * && ./unpack-sources.sh && chown -R root:root * && ./apply-patches.sh &&  ./build.sh || true
 RUN cd * && ./unpack-sources.sh && ./apply-patches.sh &&  ./build.sh || true
 
-# 2.1 build commands
-#RUN cd * && ./build.sh /p:ArchiveDownloadedPackages=true || true
-#RUN cd * && ./build-source-tarball.sh ../tarball-output --skip-build || true
