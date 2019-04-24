@@ -1,0 +1,9 @@
+FROM rhel7prereq
+ARG tarballurl
+WORKDIR source-build
+RUN curl -o dotnet-2.tar.gz $tarballurl
+RUN tar -xvf dotnet-2.tar.gz --no-same-owner --one-top-level=/source-build/dotnet-2
+
+WORKDIR /source-build/dotnet-2
+RUN ./build.sh /p:ArchiveDownloadedPackages=true || true
+# RUN ./build-source-tarball.sh ../tarball-output --skip-build || true
