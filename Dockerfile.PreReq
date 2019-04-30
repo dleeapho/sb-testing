@@ -27,16 +27,13 @@ RUN yum updateinfo && \
 ENV PATH "/opt/rh/llvm-toolset-7/root/usr/bin:${PATH}"
 ENV CMAKE_INCLUDE_PATH "/opt/rh/llvm-toolset-7/root/usr/include"
 
-# Install tools used by the VSO build automation.  We use NodeJS from nodesource.com.
-RUN yum install -y https://rpm.nodesource.com/pub_0.10/el/7/x86_64/nodesource-release-el7-1.noarch.rpm && \
-    yum updateinfo && \
+# Install tools used by the source-build build.
+RUN yum updateinfo && \
     yum install -y git \
         zip \
         tar \
-        nodejs \
-        patch \
-    yum clean all && \
-    npm install -g azure-cli
+        patch && \
+    yum clean all
 
 # Dependencies of CoreCLR and CoreFX.  Everything except lttng is present in RHEL, for lttng we
 # get the development packages from EfficiOS.
