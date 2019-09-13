@@ -1,0 +1,63 @@
+FROM registry.access.redhat.com/rhel7
+
+
+#disable a problematic repository
+RUN yum-config-manager --disable rhel-7-server-rt-beta-rpms
+
+# install nodejs 10 and yarn for aspnetcore
+RUN yum-config-manager --enable rhel-server-rhscl-7-rpms
+RUN yum-config-manager --enable rhel-7-server-optional-rpms
+RUN yum install -y rh-nodejs10
+RUN curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
+RUN curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
+RUN yum install -y yarn
+
+# Install the base toolchain we need to build anything (clang, cmake, make and the like)
+# this does not include libraries that we need to compile different projects, we'd like
+# them in a different layer.
+
+# --- Toolchain from RHEL-7 software collection ---
+RUN yum updateinfo && \
+	yum-config-manager --enable rhel-7-server-devtools-rpms && \
+	yum install -y rh-dotnet20-jsoncpp --enablerepo=rhel-7-server-dotnet-rpms \
+	llvm-toolset-7-cmake.x86_64 \
+	llvm-toolset-7-clang.x86_64 \
+	llvm-toolset-7-clang-libs.x86_64 \
+	llvm-toolset-7-lldb.x86_64 \
+	llvm-toolset-7-lldb-devel.x86_64 \
+	llvm-toolset-7-llvm.x86_64 \
+	llvm-toolset-7-llvm-libs.x86_64 \
+        wget \
+        which \
+        make && \
+    yum clean all
+# Needed by coreclr build to discover llvm-toolset-7 clang, and includes
+ENV PATH "/opt/rh/llvm-toolset-7/root/usr/bin:${PATH}"
+ENV CMAKE_INCLUDE_PATH "/opt/rh/llvm-toolset-7/root/usr/include"
+
+# Install tools used by the source-build build.
+RUN yum updateinfo && \
+    yum install -y git \
+        zip \
+        tar \
+        patch && \
+    yum clean all
+
+# Dependencies of CoreCLR and CoreFX.  Everything except lttng is present in RHEL, for lttng we
+# get the development packages from EfficiOS.
+RUN wget -P /etc/yum.repos.d/ https://packages.efficios.com/repo.files/EfficiOS-RHEL7-x86-64.repo && \
+    rpmkeys --import https://packages.efficios.com/rhel/repo.key && \
+    yum updateinfo && \
+    yum install --enablerepo=rhel-7-server-optional-rpms -y libicu-devel \
+        libuuid-devel \
+        libcurl-devel \
+        openssl-devel \
+        libunwind-devel \
+        lttng-ust-devel && \
+    yum clean all
+
+# Define the en_US.UTF-8 locale (without this, processes MSBuild trys to launch complain about
+# being unable to use the en_US.UTF-8 locale which can cause downstream failures if you capture
+# the output of a run)
+RUN localedef -c -i en_US -f UTF-8 en_US.UTF-8
+
