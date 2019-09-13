@@ -4,14 +4,6 @@ FROM registry.access.redhat.com/rhel7
 #disable a problematic repository
 RUN yum-config-manager --disable rhel-7-server-rt-beta-rpms
 
-# install nodejs 10 and yarn for aspnetcore
-RUN yum-config-manager --enable rhel-server-rhscl-7-rpms
-RUN yum-config-manager --enable rhel-7-server-optional-rpms
-RUN yum install -y rh-nodejs10
-RUN curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
-RUN curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
-RUN yum install -y yarn
-
 # Install the base toolchain we need to build anything (clang, cmake, make and the like)
 # this does not include libraries that we need to compile different projects, we'd like
 # them in a different layer.
