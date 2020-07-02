@@ -5,4 +5,4 @@ RUN curl -o dotnet-2.tar.gz $tarballurl
 RUN mkdir -p /source-build/dotnet-2 && tar -xvf dotnet-2.tar.gz -C /source-build/dotnet-2 --no-same-owner --strip-components=1
 
 WORKDIR /source-build/dotnet-2
-RUN ./build.sh /p:ArchiveDownloadedPackages=true || true
+RUN ./build.sh -- /p:PortableBuild=true /p:ArchiveDownloadedPackages=true || true
