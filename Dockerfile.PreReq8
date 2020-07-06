@@ -32,6 +32,7 @@ RUN yum updateinfo && \
 	which \
 	make && \
   yum clean all
+
 # Needed by coreclr build to discover llvm-toolset-7 clang, and includes
 ENV PATH "/opt/rh/llvm-toolset-8/root/usr/bin:${PATH}"
 ENV CMAKE_INCLUDE_PATH "/opt/rh/llvm-toolset-8/root/usr/include"
@@ -44,17 +45,14 @@ RUN yum updateinfo && \
         patch && \
     yum clean all
 
-# Dependencies of CoreCLR and CoreFX.  Everything except lttng is present in RHEL, for lttng we
-# get the development packages from EfficiOS.
-RUN wget -P /etc/yum.repos.d/ https://packages.efficios.com/repo.files/EfficiOS-RHEL8-x86-64.repo && \
-    rpmkeys --import https://packages.efficios.com/rhel/repo.key && \
-    yum updateinfo && \
-    yum install --enablerepo=rhel-8-server-optional-rpms -y libicu-devel \
+# Dependencies of CoreCLR and CoreFX.  Everything except lttng is present in RHEL
+RUN yum updateinfo && \
+    yum install -y libicu-devel \
         libuuid-devel \
         libcurl-devel \
         openssl-devel \
-        libunwind-devel \
-        lttng-ust-devel && \
+        libunwind-devel.x86_64 \
+        lttng-ust-devel.x86_64 && \
     yum clean all
 
 # Define the en_US.UTF-8 locale (without this, processes MSBuild trys to launch complain about
