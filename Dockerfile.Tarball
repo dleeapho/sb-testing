@@ -1,4 +1,4 @@
-FROM rhel7prereq
+FROM rhel8prereq
 ARG tarballurl
 WORKDIR source-build
 RUN curl -o dotnet-2.tar.gz $tarballurl
