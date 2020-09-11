@@ -11,6 +11,7 @@ RUN yum updateinfo && \
 	llvm-devel.x86_64 \
 	wget \
 	which \
+	python2 \
 	make && \
   yum clean all
 
