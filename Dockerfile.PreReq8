@@ -1,8 +1,9 @@
 FROM registry.access.redhat.com/ubi8
-# The host RHEL 8.1 machine must have a subscription-manager registration
-# and the following repos enabled 'subscription-manager repos --enable <repo>
+# The host RHEL 8 machine must have a subscription-manager registration
+# and the following repos enabled subscription-manager repos --enable <repo>
 #   - rhel-8-for-x86_64-appstream-rpms (default for cmake, llvm-toolset.x86_64)
 #   - codeready-builder-for-rhel-8-x86_64-rpms (for lttng-ust-devel)
+# Also buildah/podman must be in rooted mode to acces the above host repos.
 
 # Install the base toolchain we need to build anything (clang, cmake, make and the like)
 RUN yum updateinfo && \
@@ -11,21 +12,17 @@ RUN yum updateinfo && \
 	llvm-devel.x86_64 \
 	wget \
 	which \
-	python2 \
+	python36 \
 	make && \
   yum clean all
 
-# Needed by coreclr build to discover llvm-toolset, clang, and includes
-# TODO: find the real path for rhel8
-# ENV PATH "/opt/rh/llvm-toolset-8/root/usr/bin:${PATH}"
-# ENV CMAKE_INCLUDE_PATH "/usr/include"
-
-# Install tools used by the source-build build.
+# Install tools used by the source-build build. procps-ng is for pkill, used in smoke-test.sh
 RUN yum updateinfo && \
     yum install -y git \
         zip \
         tar \
-        patch && \
+        patch \
+	procps-ng && \
     yum clean all
 
 # Dependencies of runtime.  

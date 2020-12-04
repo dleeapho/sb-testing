@@ -1,9 +1,9 @@
-FROM rhel7prereq
+FROM rhel8prereq
 ARG gitbranch=master 
 ARG giturl=https://github.com/dotnet/source-build.git
 RUN git clone -b $gitbranch --single-branch $giturl source-build
 
 WORKDIR source-build
 
-RUN ./build.sh /p:ArchiveDownloadedPackages=true || true
-RUN ./build-source-tarball.sh ../tarball-output --skip-build || true
+# RUN ./build.sh -- /p:PortableBuild=true /p:ArchiveDownloadedPackages=true || true
+RUN ./build.sh || true
