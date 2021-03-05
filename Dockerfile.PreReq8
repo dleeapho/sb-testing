@@ -10,6 +10,7 @@ RUN yum updateinfo && \
     yum install -y cmake \ 
 	llvm-toolset.x86_64 \
 	llvm-devel.x86_64 \
+    lldb-devel.x86_64 \
 	wget \
 	which \
 	python36 \

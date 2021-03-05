@@ -1,0 +1,14 @@
+# Assumes both dotnet and smoke-test-prereq tarballs are in the ./tarballs sub-directory
+FROM rhel8prereq
+
+WORKDIR /source-build
+COPY ./tarballs/ /source-build/
+
+RUN mkdir -p /source-build/dotnet
+
+RUN for f in *.tar.gz; \
+        do tar -xvf "$f" -C /source-build/dotnet --no-same-owner --strip-components=1; \
+    done
+
+WORKDIR /source-build/dotnet
+RUN ./build.sh --run-smoke-test || true

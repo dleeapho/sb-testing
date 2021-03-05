@@ -11,8 +11,8 @@ RUN yum-config-manager --disable rhel-7-server-rt-beta-rpms
 # --- Toolchain from RHEL-7 software collection ---
 RUN yum updateinfo && \
 	yum-config-manager --enable rhel-7-server-devtools-rpms && \
-	yum install -y rh-dotnet20-jsoncpp --enablerepo=rhel-7-server-dotnet-rpms \
-	llvm-toolset-7-cmake.x86_64 \
+	# yum install -y rh-dotnet20-jsoncpp --enablerepo=rhel-7-server-dotnet-rpms \
+	yum install -y llvm-toolset-7-cmake.x86_64 \
 	llvm-toolset-7-clang.x86_64 \
 	llvm-toolset-7-clang-libs.x86_64 \
 	llvm-toolset-7-lldb.x86_64 \
@@ -31,14 +31,15 @@ ENV CMAKE_INCLUDE_PATH "/opt/rh/llvm-toolset-7/root/usr/include"
 RUN yum updateinfo && \
     yum install -y git \
         zip \
+        zlib-devel \
         tar \
         patch && \
     yum clean all
+# ZLIB_LIBRARY ZLIB_INCLUDE_DIR
 
 # Dependencies of CoreCLR and CoreFX.  Everything except lttng is present in RHEL, for lttng we
-# get the development packages from EfficiOS.
-RUN wget -P /etc/yum.repos.d/ https://packages.efficios.com/repo.files/EfficiOS-RHEL7-x86-64.repo && \
-    rpmkeys --import https://packages.efficios.com/rhel/repo.key && \
+# get the development packages from EPEL.
+RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum updateinfo && \
     yum install --enablerepo=rhel-7-server-optional-rpms -y libicu-devel \
         libuuid-devel \

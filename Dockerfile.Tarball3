@@ -1,8 +1,9 @@
-FROM rhel8prereq
+FROM rhel7prereq3
 ARG tarballurl
 WORKDIR /source-build
 RUN curl -o dotnet.tar.gz $tarballurl
 RUN mkdir -p /source-build/dotnet && tar -xvf dotnet.tar.gz -C /source-build/dotnet --no-same-owner --strip-components=1
 
 WORKDIR /source-build/dotnet
+# RUN ./build.sh /p:PortableBuild=true /p:ArchiveDownloadedPackages=true || true
 RUN ./build.sh || true
