@@ -7,10 +7,9 @@ COPY ./tarballs/ /source-build/
 RUN mkdir -p /source-build/dotnet
 
 RUN for f in *.tar.gz; \
-        do tar -xvf "$f" -C /source-build/dotnet --no-same-owner --strip-components=3; \
+        do tar -xvf "$f" -C /source-build/dotnet --no-same-owner --strip-components=2; \
     done
 
 WORKDIR /source-build/dotnet
 RUN ./build.sh || true
-RUN ./build.sh --run-smoke-test || true
-
+RUN ./smoke-test.sh || true
