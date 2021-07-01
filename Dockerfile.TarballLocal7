@@ -12,5 +12,4 @@ RUN for f in *.tar.gz; \
 
 WORKDIR /source-build/dotnet
 RUN ./build.sh || true
-RUN ./build.sh --run-smoke-test || true
-
+RUN ./smoke-test.sh || true
