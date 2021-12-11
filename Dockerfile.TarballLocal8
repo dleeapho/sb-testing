@@ -11,7 +11,7 @@ RUN for f in *.tar.gz; \
     done
 
 WORKDIR /source-build/dotnet
-RUN ./prep.sh || true
-RUN ./build.sh || true
-RUN ./build.sh --run-smoke-test || true
+RUN ./prep.sh --bootstrap || true
+RUN ./build.sh --offline -- /p:CleanWhileBuilding=true || true
+# RUN ./build.sh --run-smoke-test || true
 
